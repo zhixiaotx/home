@@ -1,46 +1,65 @@
-# Dev 分支推送部署预览
-## 仅部署 Win 端
-name: Build Dev
+# Dev分支推送自动构建并部署GitHub Pages（Windows编译环境）
+name: Build Dev & Deploy Pages
 
+# 触发条件：dev、master分支推送代码
 on:
   push:
     branches:
       - dev
       - master
+  # 支持手动触发构建
+  workflow_dispatch:
 
 jobs:
   release:
-    name: Build Website
+    name: Build Website & Deploy
     runs-on: windows-latest
 
     steps:
-      # 检出 Git 仓库
+      # 1. 拉取仓库代码
       - name: Check out git repository
         uses: actions/checkout@v4.1.1
-      # 安装 Node.js
+        with:
+          fetch-depth: 0
+
+      # 2. 配置Node18环境
       - name: Install Node.js
         uses: actions/setup-node@v4.0.0
         with:
           node-version: "18.x"
-      # 复制环境变量文件
-      - name: Copy .env.example
+          cache: 'npm' # 缓存依赖，加速构建
+
+      # 3. Powershell 判断复制env文件（windows执行脚本）
+      - name: Copy .env.example to .env
         run: |
           if (-not (Test-Path .env)) {
             Copy-Item .env.example .env
+            Write-Host "已生成.env文件"
           } else {
-            Write-Host ".env file already exists. Skipping the copy step."
+            Write-Host ".env 文件已存在，跳过复制"
           }
-      # 安装项目依赖
+
+      # 4. 安装依赖
       - name: Install Dependencies
         run: npm install
-      # 构建程序
+
+      # 5. 执行项目打包
       - name: Build Website
         run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+      # 6. 上传dist构建产物（存档备份）
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          folder: dist
-          branch: gh-pages
+          name: Home-Dist
+          path: ./dist # 修复你原先缺少的路径闭合符号
+
+      # 7. 部署dist文件夹到GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist    # 要发布的静态资源目录
+          publish_branch: gh-pages # pages默认发布分支（无需手动创建）
