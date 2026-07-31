@@ -44,3 +44,5 @@ jobs:
         with:
           name: Home
           path: dist
+          folder: dist
+          branch: gh-pages
