@@ -14,15 +14,15 @@ jobs:
 
     steps:
       - name: Check out git repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.2.3
+        with:
+          fetch-depth: 0
+          persist-credentials: false # 关闭默认凭证，改用配置token
 
-      # 升级setup-node版本，使用Node 22 LTS 规避Node20弃用提醒
       - name: Install Node.js
-        uses: actions/setup-node@v4.2.0
+        uses: actions/setup-node@v4.3.0
         with:
           node-version: "22.x"
-          # 注释/删除cache配置，解决lock文件不存在报错
-          # cache: 'npm'
 
       - name: Copy .env.example
         run: |
@@ -41,14 +41,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: Home-Dist
           path: ./dist
 
+      # 关键：配置git用户名邮箱 + 传入token授权，解决git 128
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v4.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
