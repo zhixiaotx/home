@@ -1,13 +1,10 @@
-# Dev分支推送自动构建并部署GitHub Pages（Windows编译环境）
 name: Build Dev & Deploy Pages
 
-# 触发条件：dev、master分支推送代码
 on:
   push:
     branches:
       - dev
       - master
-  # 支持手动触发构建
   workflow_dispatch:
 
 jobs:
@@ -16,50 +13,42 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # 1. 拉取仓库代码
       - name: Check out git repository
-        uses: actions/checkout@v4.1.1
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v4.2.2
 
-      # 2. 配置Node18环境
+      # 升级setup-node版本，使用Node 22 LTS 规避Node20弃用提醒
       - name: Install Node.js
-        uses: actions/setup-node@v4.0.0
+        uses: actions/setup-node@v4.2.0
         with:
-          node-version: "18.x"
-          cache: 'npm' # 缓存依赖，加速构建
+          node-version: "22.x"
+          # 注释/删除cache配置，解决lock文件不存在报错
+          # cache: 'npm'
 
-      # 3. Powershell 判断复制env文件（windows执行脚本）
-      - name: Copy .env.example to .env
+      - name: Copy .env.example
         run: |
           if (-not (Test-Path .env)) {
             Copy-Item .env.example .env
-            Write-Host "已生成.env文件"
           } else {
-            Write-Host ".env 文件已存在，跳过复制"
+            Write-Host ".env file already exists. Skipping the copy step."
           }
 
-      # 4. 安装依赖
       - name: Install Dependencies
         run: npm install
 
-      # 5. 执行项目打包
       - name: Build Website
         run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      # 6. 上传dist构建产物（存档备份）
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Home-Dist
-          path: ./dist # 修复你原先缺少的路径闭合符号
+          path: ./dist
 
-      # 7. 部署dist文件夹到GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist    # 要发布的静态资源目录
-          publish_branch: gh-pages # pages默认发布分支（无需手动创建）
+          publish_dir: ./dist
+          publish_branch: gh-pages
