@@ -13,12 +13,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      # 正确可用版本 checkout@v4.2.1
       - name: Check out git repository
-        uses: actions/checkout@v4.2.3
+        uses: actions/checkout@v4.2.1
         with:
           fetch-depth: 0
-          persist-credentials: false # 关闭默认凭证，改用配置token
 
+      # setup-node 稳定版，使用 Node 22 LTS
       - name: Install Node.js
         uses: actions/setup-node@v4.3.0
         with:
@@ -40,18 +41,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
+      # upload-artifact 正式稳定版
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4.4.3
         with:
           name: Home-Dist
           path: ./dist
 
-      # 关键：配置git用户名邮箱 + 传入token授权，解决git 128
+      # 配置git提交人信息，根治git 128错误
+      - name: Config git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 部署到 gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
