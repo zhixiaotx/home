@@ -1,37 +1,92 @@
 [
   {
-    "icon": "Blog",
-    "name": "博客",
-    "link": "https://blog.imsyy.top/"
-  },
-  {
-    "icon": "Cloud",
-    "name": "网盘",
-    "link": "https://pan.imsyy.top/"
-  },
-  {
-    "icon": "CompactDisc",
-    "name": "音乐",
-    "link": "https://music.imsyy.top/"
+    "icon": "LaptopCode",
+    "name": "oiio导航",
+    "link": "https://oiio-nav.pages.dev/"
   },
   {
     "icon": "Compass",
-    "name": "起始页",
-    "link": "https://nav.imsyy.top/"
+    "name": "X主页",
+    "link": "https://so.13145219.xyz/"
+  },
+  {
+    "icon": "BookReader",
+    "name": "图床",
+    "link": "https://imgbed.stimi.cc.cd/"
+  },  
+  {
+    "icon": "Blog",
+    "name": "博客",
+    "link": "https://blog.stimi.cc.cd/"
+  },
+  {
+    "icon": "Blog",
+    "name": "drugsitenav",
+    "link": "https://drugsitenav.pages.dev/"
+  },  
+  {
+    "icon": "CompactDisc",
+    "name": "ai-navigator",
+    "link": "https://ai-navigator.wasmer.app/"
+  }, 
+  {
+    "icon": "Quran",
+    "name": "储物间",
+    "link": "https://cwj.pages.dev/"
+  },
+  {
+    "icon": "BookReader",
+    "name": "lib",
+    "link": "https://lib-6z1.pages.dev/"
+  },    
+  {
+    "icon": "HouseUser",
+    "name": "drugnavs",
+    "link": "https://drugnavs.pages.dev/"
+  },
+  {
+    "icon": "Podcast",
+    "name": "drugnav",
+    "link": "https://drugnav.pages.dev/"
   },
   {
     "icon": "Book",
-    "name": "网址集",
-    "link": "https://web.imsyy.top/"
+    "name": "allfordrug",
+    "link": "https://allfordrug.pages.dev/"
   },
   {
     "icon": "Fire",
-    "name": "今日热榜",
-    "link": "https://hot.imsyy.top/"
+    "name": "drugsites",
+    "link": "https://drugsites.pages.dev/"
   },
   {
-    "icon": "LaptopCode",
-    "name": "站点监测",
-    "link": "https://status.imsyy.top/"
-  }
+    "icon": "Fan",
+    "name": "drugsite",
+    "link": "https://drugsite.pages.dev/"
+  },
+  {
+    "icon": "PaperPlane",
+    "name": "jubt",
+    "link": "https://lbt-dnw.pages.dev/"
+  },
+    {
+    "icon": "LightbulbRegular",
+    "name": "iptvindex-1",
+    "link": "https://iptvindex-new.13145219.xyz/"
+  },
+  {
+    "icon": "Cloud",
+    "name": "pan",
+    "link": "https://pan.vercel.de5.net/"
+  },
+    {
+    "icon": "Link",
+    "name": "notemark",
+    "link": "https://notemark.13145219.xyz/"
+  },
+    {
+    "icon": "Link",
+    "name": "webdesk-pro",
+    "link": "https://webdesk-pro.13145219.xyz/"
+  }  
 ]
